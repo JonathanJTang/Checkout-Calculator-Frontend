@@ -1,0 +1,2 @@
+When loading first time,
+please use nvm install
