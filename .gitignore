@@ -69,7 +69,7 @@ typings/
 .history
 
 # Team specific files
-CSC301 A1.code-workspace
+*.code-workspace
 SetupInstructions.txt
 
 
