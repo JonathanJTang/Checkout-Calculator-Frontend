@@ -6,7 +6,7 @@ jobs:
   # The following section from orb node/test
   test:
     docker:
-    - image: cimg/node:13.11.0
+    - image: cimg/node:12.18
     steps:
     - checkout
     - run:
