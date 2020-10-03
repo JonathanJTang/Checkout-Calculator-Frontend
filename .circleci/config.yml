@@ -1,0 +1,51 @@
+version: 2.1
+orbs:
+  node: circleci/node@3.0.1
+
+jobs:
+  # The following section from orb node/test
+  test:
+    docker:
+    - image: cimg/node:13.11.0
+    steps:
+    - checkout
+    - run:
+        command: |
+          if [ ! -f "package.json" ]; then
+            echo
+            echo "---"
+            echo "Unable to find your package.json file. Did you forget to set the app-dir parameter?"
+            echo "---"
+            echo
+            echo "Current directory: $(pwd)"
+            echo
+            echo
+            echo "List directory: "
+            echo
+            ls
+            exit 1
+          fi
+        name: Checking for package.json.
+        working_directory: ~/project/frontend  # Path edited for our directory configuration
+    - restore_cache:
+        keys:
+        # Path edited for our directory configuration
+        - node-deps-v1-{{ .Branch }}-{{ checksum "~/project/frontend/package-lock.json" }}
+    - run:
+        command: "if [[ ! -z \"\" ]]; then\n  echo \"Running override package installation command:\"\n  \nelse\n  npm ci\nfi\n"
+        name: Installing NPM packages
+        working_directory: ~/project/frontend  # Path edited for our directory configuration
+    - save_cache:
+        # Path edited for our directory configuration
+        key: node-deps-v1-{{ .Branch }}-{{ checksum "~/project/frontend/package-lock.json" }}
+        paths:
+        - ~/.npm
+    - run:
+        command: npm run test
+        name: Run NPM Tests
+        working_directory: ~/project/frontend  # Path edited for our directory configuration
+
+workflows:
+  node-tests:
+    jobs:
+      - test
