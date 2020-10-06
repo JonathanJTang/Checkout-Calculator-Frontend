@@ -1,37 +1,66 @@
 import React, { Component } from 'react';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';
+
 import './App.css';
+import './itemsList.js'
+import LeftPane from './LeftPane';
 
 
-// const list = [
-//   {
-//     'id': 1,
-//     'title': '1st Item',
-//     'description': 'Description here.'
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     flexGrow: 1,
+//     overflow: 'hidden',
+//     padding: theme.spacing(0, 3),
 //   },
-//   {
-//     'id': 2,
-//     'title': '2nd Item',
-//     'description': 'Another description here.'
+//   card: {
+//     maxWidth: 400,
+//     margin: `${theme.spacing(1)}px auto`,
+//     padding: theme.spacing(2),
 //   },
-//   {
-//     'id': 3,
-//     'title': '3rd Item',
-//     'description': 'Third description here.'
-//   }
-// ];
+// }));
+
+class RightPane extends Component {
+  render() {
+    return (
+      <Box id="rightPane" p={1}>
+        <Grid
+          id="rightTest"
+          container
+          direction="column"
+          // justify="center"
+          alignItems="stretch"
+          spacing={2}>
+            <Grid item xs={9}>
+              <Button variant="contained" size="large" color="primary">
+                Checkout
+              </Button>
+            </Grid>
+            <Grid item>
+              
+            </Grid>
+        </Grid>
+      </Box>
+    );
+  }
+}
 
 class App extends Component {
+
   state = {
-    items: []
+    productList: []
   };
 
   async componentDidMount() {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/');
-      const items = await res.json();
+      const res = await fetch('http://127.0.0.1:8000/api/product-database');
+      const productList = await res.json();
       this.setState({
-        items
+        productList
       });
+      console.log(productList)
     } catch (e) {
       console.log(e);
     }
@@ -39,30 +68,14 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <div className="App">
-          <header className="App-header">
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-          </header>
-        </div>
-        <div>
-        {this.state.items.map(item => (
-          <div key={item.id}>
-            <h1>{item.name}</h1>
-            <span>{item.price}</span>
-          </div>
-        ))}
-      </div>
+      <div className="App">
+        <Box m={0}>
+          <header className="appHeader">Checkout Calculator</header>
+        </Box>
+        <Box>
+          <RightPane></RightPane>
+          <LeftPane productList={this.state.productList == null ? "Did not receive data from server" : this.state.productList}></LeftPane>
+        </Box>
       </div>
     );
   }

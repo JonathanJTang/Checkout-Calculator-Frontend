@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
+  background-color: aqua;
+  min-height: 100vh;  /* Take up full height of screen */
 }
 
 /* .App-logo {
@@ -11,13 +13,22 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 } */
 
-.App-header {
+
+.appHeader {
   background-color: #282c34;
-  min-height: 100vh;
+  height: 6vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -28,11 +39,38 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#leftPane {
+  float: right;
+  box-sizing: border-box;
+  width: 70%;
+  height: 94vh;  /* Since appHeader takes up 6vh */
+  background-color: lightblue;
+}
+
+#rightPane {
+  float: right;
+  box-sizing: border-box;
+  width: 30%;
+  height: 94vh;  /* Since appHeader takes up 6vh */
+  background-color: white;
+}
+
+#rightTest {
+  background-color: white;
+  width: 100%;
+}
+
+#checkoutItemsList {
+  box-sizing: border-box;
+  height: 86vh;
+}
+
+#subtotalBar {
+  background-color: aquamarine;
+  box-sizing: border-box;
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
 }
