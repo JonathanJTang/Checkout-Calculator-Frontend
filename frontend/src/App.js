@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import { withStyles } from '@material-ui/core/styles';
 
 import './App.css';
@@ -23,6 +26,10 @@ import LeftPane from './LeftPane';
 // }));
 
 class RightPane extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <Box id="rightPane" p={1}>
@@ -30,16 +37,17 @@ class RightPane extends Component {
           id="rightTest"
           container
           direction="column"
-          // justify="center"
+          justify="center"
           alignItems="stretch"
           spacing={2}>
-            <Grid item xs={9}>
-              <Button variant="contained" size="large" color="primary">
+            <Grid container item style={{flexGrow: 4}}>
+              Buttons
+            </Grid>
+            <Grid container item>
+              <Button variant="contained" size="large" color="primary"
+                  style={{minWidth: '75%', minHeight: "40px", margin: 'auto'}}>
                 Checkout
               </Button>
-            </Grid>
-            <Grid item>
-              
             </Grid>
         </Grid>
       </Box>
@@ -69,10 +77,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Box m={0}>
-          <header className="appHeader">Checkout Calculator</header>
-        </Box>
         <Box>
+          <AppBar position="fixed" className="appHeader">
+            <Toolbar>
+              Checkout Calculator
+            </Toolbar>
+          </AppBar>
+          <Box><header className="appHeader"></header></Box>
           <RightPane></RightPane>
           <LeftPane productList={this.state.productList == null ? "Did not receive data from server" : this.state.productList}></LeftPane>
         </Box>
