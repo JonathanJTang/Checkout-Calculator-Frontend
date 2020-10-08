@@ -58,14 +58,15 @@
   float: right;
   box-sizing: border-box;
   width: calc(200px + 10%);
-  height: var(--main-window-height);  /* Since appHeader takes up 6vh */
+  height: var(--main-window-height);
   background-color: #c1c8e4;
   border-left: 1px solid #9e9e9e;
 }
 
-#rightTest {
+#orderButtonsGroup {
   background-color: white;
-  height: inherit;
+  max-height: calc(var(--main-window-height) - var(--subtotal-bar-height));
+  overflow: auto;
 }
 
 #leftPane {
@@ -75,12 +76,12 @@
   box-sizing: border-box;
   width: calc(90% - 200px);
   height: var(--main-window-height);  /* Since appHeader takes up 6vh */
-  /* background-color: aqua; */
 }
 
 #checkoutItemsList {
   box-sizing: border-box;
   height: calc(var(--main-window-height) - var(--subtotal-bar-height));
+  overflow: auto;
 }
 
 #subtotalBar {

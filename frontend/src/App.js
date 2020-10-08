@@ -1,77 +1,76 @@
 import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { withStyles } from '@material-ui/core/styles';
+// import { withStyles } from '@material-ui/core/styles';
 
 import './App.css';
 import './itemsList.js'
 import LeftPane from './LeftPane';
+import RightPane from './RightPane';
 
+// Use either the local Django server url, or the hosted server link
+const baseUrl = "http://127.0.0.1:8000";
+const apiBaseUrl = baseUrl + "/api";
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//     overflow: 'hidden',
-//     padding: theme.spacing(0, 3),
-//   },
-//   card: {
-//     maxWidth: 400,
-//     margin: `${theme.spacing(1)}px auto`,
-//     padding: theme.spacing(2),
-//   },
-// }));
-
-class RightPane extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Box id="rightPane" p={1}>
-        <Grid
-          id="rightTest"
-          container
-          direction="column"
-          justify="center"
-          alignItems="stretch"
-          spacing={2}>
-            <Grid container item style={{flexGrow: 4}}>
-              Buttons
-            </Grid>
-            <Grid container item>
-              <Button variant="contained" size="large" color="primary"
-                  style={{minWidth: '75%', minHeight: "40px", margin: 'auto'}}>
-                Checkout
-              </Button>
-            </Grid>
-        </Grid>
-      </Box>
-    );
-  }
-}
 
 class App extends Component {
 
   state = {
-    productList: []
+    productList: [],
+    cartList: []
   };
 
   async componentDidMount() {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/product-database');
-      const productList = await res.json();
+      const response = await fetch(apiBaseUrl + "/product-database");
+      const productList = await response.json();
       this.setState({
-        productList
+        productList: productList
       });
-      console.log(productList)
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async onOrderButtonClick(id) {
+    const product = this.state.productList.find((product) => {return product.id === id});
+    try {
+      // Fetch database entry for this product, to see if there are any updates
+      const response = await fetch(apiBaseUrl + `/product-database/${product.id}`);
+      const updatedProduct = await response.json();
+      // console.log(updatedProduct);
+      if (updatedProduct.available_stock <= 0) {  // If product now out of stock
+        alert(`Sorry, product ${product.name} is out of stock`);
+      } else {
+        const cartItemIndex = this.state.cartList.findIndex((cartItem) => {return cartItem.id === product.id});
+        if (cartItemIndex === -1) {
+          // The cart currently has no items of this product 
+          const cartProduct = Object.assign({}, product);
+          delete cartProduct.available_stock;
+          cartProduct.quantity = 1;
+          this.setState({cartList: this.state.cartList.concat(cartProduct)});
+        } else {
+          // The cart currently has no items of this product 
+          const cartProduct = this.state.cartList[cartItemIndex];
+          cartProduct.quantity += 1;
+          this.setState({cartList: this.state.cartList});
+        }
+        
+      }
+    } catch (e) {
+      alert("Sorry, an error occurred. Please try again, making sure the web server is online.");
+      console.log(e);
+    }
+  }
+
+  onCartItemRemoveClick(id) {
+    const cartItemIndex = this.state.cartList.findIndex((cartItem) => {return cartItem.id === id});
+    console.log("before delete: ", this.state.cartList);
+    this.state.cartList.splice(cartItemIndex, 1);
+    console.log("after delete: ", this.state.cartList);
+    this.setState({cartList: this.state.cartList});
   }
 
   render() {
@@ -84,8 +83,16 @@ class App extends Component {
             </Toolbar>
           </AppBar>
           <Box><header className="appHeader"></header></Box>
-          <RightPane></RightPane>
-          <LeftPane productList={this.state.productList == null ? "Did not receive data from server" : this.state.productList}></LeftPane>
+          <RightPane
+            productList={this.state.productList}
+            parentClickHandler={this.onOrderButtonClick.bind(this)}
+          >
+          </RightPane>
+          <LeftPane
+            cartList={this.state.cartList}
+            parentClickHandler={this.onCartItemRemoveClick.bind(this)}
+          >
+          </LeftPane>
         </Box>
       </div>
     );
