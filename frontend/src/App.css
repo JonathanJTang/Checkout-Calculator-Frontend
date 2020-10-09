@@ -1,5 +1,22 @@
+/* Colors:
+#5680e9
+#84ceeb
+#5ab9ea
+#c1c8e4
+#8860d0
+*/
+
+:root {
+  --appbar-height: 7vh;
+  --main-window-height: calc(100vh - var(--appbar-height));
+  --subtotal-bar-height: calc(40px + 2vh);
+}
+
 .App {
-  text-align: center;
+  /* text-align: center; */
+  /* background-color: #5ebbff; */
+  background-color: white;
+  min-height: 100vh;  /* Take up full height of screen */
 }
 
 /* .App-logo {
@@ -11,13 +28,22 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 } */
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+
+.appHeader {
+  /* background-color: #282c34; */
+  height: var(--appbar-height);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -28,11 +54,52 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#rightPane {
+  float: right;
+  box-sizing: border-box;
+  width: calc(200px + 10%);
+  height: var(--main-window-height);
+  background-color: white;
+  border-left: 1px solid #9e9e9e;
+}
+
+#orderButtonsGroup {
+  /* background-color: white; */
+  max-height: calc(var(--main-window-height) - var(--subtotal-bar-height) - 20px);
+  overflow: auto;
+  margin-bottom: 20px;
+}
+
+#checkoutButton {
+  max-height: var(--subtotal-bar-height);
+}
+
+#leftPane {
+  background-color: #84ceeb;
+  /* background-color: #e2e2e2; */
+  float: right;
+  box-sizing: border-box;
+  width: calc(90% - 200px);
+  height: var(--main-window-height);  /* Since appHeader takes up 6vh */
+}
+
+#checkoutItemsList {
+  box-sizing: border-box;
+  height: calc(var(--main-window-height) - var(--subtotal-bar-height));
+  overflow: auto;
+}
+
+#subtotalBar {
+  /* background-color: #5cdb95; */
+  /* background-color: #e7717d; */
+  background-color: #5680e9;
+  background-color: #8860d9;
+  box-sizing: border-box;
+  height: var(--subtotal-bar-height);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  padding-right: 20px;
 }

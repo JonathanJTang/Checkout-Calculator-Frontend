@@ -1,68 +1,104 @@
 import React, { Component } from 'react';
+import Box from '@material-ui/core/Box';
+// import Paper from '@material-ui/core/Paper';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+// import { withStyles } from '@material-ui/core/styles';
+
 import './App.css';
+import LeftPane from './LeftPane';
+import RightPane from './RightPane';
 
+// Use either the local Django server url, or the hosted server link
+const baseUrl = "http://127.0.0.1:8000";
+const apiBaseUrl = baseUrl + "/api";
 
-// const list = [
-//   {
-//     'id': 1,
-//     'title': '1st Item',
-//     'description': 'Description here.'
-//   },
-//   {
-//     'id': 2,
-//     'title': '2nd Item',
-//     'description': 'Another description here.'
-//   },
-//   {
-//     'id': 3,
-//     'title': '3rd Item',
-//     'description': 'Third description here.'
-//   }
-// ];
 
 class App extends Component {
+
   state = {
-    items: []
+    productList: [],
+    cartList: []
   };
 
   async componentDidMount() {
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/');
-      const items = await res.json();
+      const response = await fetch(apiBaseUrl + "/product-database");
+      const productList = await response.json();
       this.setState({
-        items
+        productList: productList
       });
     } catch (e) {
       console.log(e);
     }
   }
 
+  async onOrderButtonClick(id) {
+    const product = this.state.productList.find((product) => {return product.id === id});
+    try {
+      // Fetch database entry for this product, to see if there are any updates
+      const response = await fetch(apiBaseUrl + `/product-database/${product.id}`);
+      const updatedProduct = await response.json();
+      // console.log(updatedProduct);
+      if (updatedProduct.available_stock <= 0) {  // If product now out of stock
+        alert(`Sorry, product ${product.name} is out of stock`);
+      } else {
+        const cartItemIndex = this.state.cartList.findIndex((cartItem) => {return cartItem.id === product.id});
+        if (cartItemIndex === -1) {
+          // The cart currently has no items of this product 
+          const cartProduct = Object.assign({}, product);
+          delete cartProduct.available_stock;
+          cartProduct.quantity = 1;
+          this.setState({cartList: this.state.cartList.concat(cartProduct)});
+        } else {
+          // The cart currently has no items of this product 
+          const cartProduct = this.state.cartList[cartItemIndex];
+          cartProduct.quantity += 1;
+          this.setState({cartList: this.state.cartList});
+        }
+        
+      }
+    } catch (e) {
+      alert("Sorry, an error occurred. Please try again, making sure the web server is online.");
+      console.log(e);
+    }
+  }
+
+  onCartItemRemoveClick(id) {
+    const cartItemIndex = this.state.cartList.findIndex((cartItem) => {return cartItem.id === id});
+    console.log("before delete: ", this.state.cartList);
+    this.state.cartList.splice(cartItemIndex, 1);
+    console.log("after delete: ", this.state.cartList);
+    this.setState({cartList: this.state.cartList});
+  }
+
+  onCheckoutClick() {
+    alert("You have successfully checked out the items!\nPress 'OK' to checkout the next customer")
+    this.setState({cartList: []})  // Clear the cart
+  }
+
   render() {
     return (
-      <div>
-        <div className="App">
-          <header className="App-header">
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-          </header>
-        </div>
-        <div>
-        {this.state.items.map(item => (
-          <div key={item.id}>
-            <h1>{item.name}</h1>
-            <span>{item.price}</span>
-          </div>
-        ))}
-      </div>
+      <div className="App">
+        <Box>
+          <AppBar position="fixed" className="appHeader">
+            <Toolbar>
+              Checkout Calculator
+            </Toolbar>
+          </AppBar>
+          <Box><header className="appHeader"></header></Box>
+          <RightPane
+            productList={this.state.productList}
+            parentClickHandler={this.onOrderButtonClick.bind(this)}
+            parentCheckoutClickHandler={this.onCheckoutClick.bind(this)}
+          >
+          </RightPane>
+          <LeftPane
+            cartList={this.state.cartList}
+            parentClickHandler={this.onCartItemRemoveClick.bind(this)}
+          >
+          </LeftPane>
+        </Box>
       </div>
     );
   }
