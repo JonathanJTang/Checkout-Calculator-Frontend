@@ -10,7 +10,7 @@ import RightPane from './RightPane';
 
 // Use either the local Django server url, or the hosted server link
 // const baseUrl = "http://127.0.0.1:8000";
-const baseUrl = "https://checkoutcalculator301.herokuapp.com/";
+const baseUrl = "https://checkoutcalculator301.herokuapp.com";
 const apiBaseUrl = baseUrl + "/api";
 
 
