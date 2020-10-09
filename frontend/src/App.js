@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
-// import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-// import { withStyles } from '@material-ui/core/styles';
 
 import './App.css';
 import LeftPane from './LeftPane';
