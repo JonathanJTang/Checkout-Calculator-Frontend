@@ -4,6 +4,11 @@
 
 Note on CircleCI sticker: the state is not accurate, since CircleCI tasks refused to run (and give a fail status) after class organization account ran out of credits.
 
+## Instructions for production setup
+Go to [https://checkoutcalculator301.herokuapp.com/](https://checkoutcalculator301.herokuapp.com/) to check out our web app!
+
+(Note: This app depends on the central product database (in backend), and generates buttons for each item retrieved from the database.)
+
 ## Instructions for development setup (may or may not apply depending on final production setup)
 
 (Note: we used the Long Term Support (lts) version of node/npm)
