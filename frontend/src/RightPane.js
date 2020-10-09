@@ -5,27 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import LocalDrinkIcon from '@material-ui/icons/LocalDrink';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-// import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-// import { cyan } from '@material-ui/core/colors';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     flexGrow: 1,
-//     overflow: 'hidden',
-//     padding: theme.spacing(0, 3),
-//   },
-//   card: {
-//     maxWidth: 400,
-//     margin: `${theme.spacing(1)}px auto`,
-//     padding: theme.spacing(2),
-//   },
-// }));
-
-// const theme = createMuiTheme({
-//   palette: {
-//     secondary: cyan,
-//   }
-// });
 
 
 /* Map of product name (from database) to custom icons */
@@ -59,20 +38,10 @@ class OrderButton extends Component {
 }
 
 class RightPane extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
   render() {
     return (
       <Box id="rightPane" p={1}>
-        <Grid
-          id="rightTest"
-          container
-          direction="column"
-          justify="space-around"
-          alignItems="stretch"
-          spacing={2}>
+        <Box id="orderButtonsGroup">
           <Grid container direction="column" justify="center" overflow="auto"
             style={{ flexGrow: 1}}>
             {this.props.productList.map((product) => (
@@ -84,13 +53,16 @@ class RightPane extends Component {
                 key={product.id}/>
             ))}
           </Grid>
-          <Grid container item>
-            <Button variant="contained" size="large" color="primary"
-              style={{ minWidth: '75%', minHeight: "40px", margin: 'auto' }}>
-              Checkout
-              </Button>
-          </Grid>
+        </Box>
+        <Box>
+        <Grid container item>
+          <Button variant="contained" size="large" color="primary"
+            style={{ minWidth: '75%', minHeight: "40px", margin: 'auto' }}
+            onClick={this.props.parentCheckoutClickHandler}>
+            Checkout
+            </Button>
         </Grid>
+        </Box>
       </Box>
     );
   }

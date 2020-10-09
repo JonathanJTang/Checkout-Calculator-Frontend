@@ -6,7 +6,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 // import { withStyles } from '@material-ui/core/styles';
 
 import './App.css';
-import './itemsList.js'
 import LeftPane from './LeftPane';
 import RightPane from './RightPane';
 
@@ -73,6 +72,11 @@ class App extends Component {
     this.setState({cartList: this.state.cartList});
   }
 
+  onCheckoutClick() {
+    alert("You have successfully checked out the items!\nPress 'OK' to checkout the next customer")
+    this.setState({cartList: []})  // Clear the cart
+  }
+
   render() {
     return (
       <div className="App">
@@ -86,6 +90,7 @@ class App extends Component {
           <RightPane
             productList={this.state.productList}
             parentClickHandler={this.onOrderButtonClick.bind(this)}
+            parentCheckoutClickHandler={this.onCheckoutClick.bind(this)}
           >
           </RightPane>
           <LeftPane

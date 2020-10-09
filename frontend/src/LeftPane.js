@@ -29,23 +29,23 @@ class CartItem extends Component {
 
   render() {
     return (
-      <Grid item >
+      <Grid item>
         <Card className={this.props.classes.card}>
-          <Grid container direction="row" spacing={0} justify="space-between">
-            <Grid item xs={8} className={this.props.classes.cardItem}
-                style={{flexGrow: 0}}>
+          <Grid container direction="row" justify="space-between">
+            <Grid item className={this.props.classes.cardItem}
+                style={{flexGrow: 4}}>
               <strong>{this.props.product.name} </strong>
             </Grid>
             <Grid item className={this.props.classes.cardItem}
-                style={{flexGrow: 0, textAlign: "right"}}>
+                style={{flexGrow: 1, textAlign: "right"}}>
               {this.props.product.quantity} x ${this.props.product.price} = 
             </Grid>
             <Grid item className={this.props.classes.cardItem}
-                style={{flexGrow: 0, textAlign: "right"}}>
+                style={{flexGrow: 1, textAlign: "right"}}>
               $ {(new Decimal(this.props.product.price).times(this.props.product.quantity)).toFixed(2)}
             </Grid>
             <Grid item className={this.props.classes.cardItem}
-                style={{flexGrow: 0, textAlign: "right"}}>
+                style={{flexGrow: 1, textAlign: "right"}}>
               <IconButton color="secondary" size="small" aria-label="remove this item"
                   onClick={this.onClickHandler.bind(this)}>
                 <CloseIcon />
@@ -88,7 +88,7 @@ class LeftPane extends Component {
             ))}
           </Grid>
         </Box>
-        <Box id="subtotalBar" style={{textAlign: "right"}}>
+        <Box id="subtotalBar">
           Total after tax: ${this.calculateSubtotal()}
         </Box>
       </Box>

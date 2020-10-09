@@ -59,14 +59,19 @@
   box-sizing: border-box;
   width: calc(200px + 10%);
   height: var(--main-window-height);
-  background-color: #c1c8e4;
+  background-color: white;
   border-left: 1px solid #9e9e9e;
 }
 
 #orderButtonsGroup {
-  background-color: white;
-  max-height: calc(var(--main-window-height) - var(--subtotal-bar-height));
+  /* background-color: white; */
+  max-height: calc(var(--main-window-height) - var(--subtotal-bar-height) - 20px);
   overflow: auto;
+  margin-bottom: 20px;
+}
+
+#checkoutButton {
+  max-height: var(--subtotal-bar-height);
 }
 
 #leftPane {
@@ -93,7 +98,8 @@
   height: var(--subtotal-bar-height);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-right: 20px;
 }
