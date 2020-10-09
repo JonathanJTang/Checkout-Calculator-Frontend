@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
-// import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-// import { withStyles } from '@material-ui/core/styles';
+
 
 import './App.css';
 import LeftPane from './LeftPane';
 import RightPane from './RightPane';
 
 // Use either the local Django server url, or the hosted server link
-const baseUrl = "http://127.0.0.1:8000";
+// const baseUrl = "http://127.0.0.1:8000";
+const baseUrl = "https://checkoutcalculator301.herokuapp.com/";
 const apiBaseUrl = baseUrl + "/api";
 
 
