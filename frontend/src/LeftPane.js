@@ -8,8 +8,6 @@ import { withStyles } from '@material-ui/core';
 import Decimal from 'decimal.js-light';
 
 
-const ontarioGSTRate = new Decimal(0.13);
-
 const styles = {
   card: {
     maxWidth: 700,
@@ -19,6 +17,13 @@ const styles = {
   cardItem: {
     margin: "auto",
   },
+  priceRegular: {
+    color: "black",
+  },
+  priceDiscount: {
+    color: "green",
+    fontWeight: "bold",
+  },
 };
 
 
@@ -27,10 +32,32 @@ class CartItem extends Component {
     this.props.parentClickHandler(this.props.product.id);
   }
 
+  // priceColor() {
+  //   console.log(this.props.product.discount)
+  //   if (this.props.product.discount > 0) {
+  //     console.log("if statement was true")
+  //     return "green";
+  //   } else {
+  //     console.log("if statement was false")
+  //     return "black";
+  //   }
+  // }
+
+  priceStyle() {
+    console.log(this.props.product.discount)
+    if (this.props.product.discount > 0) {
+      console.log("if statement was true")
+      return this.props.classes.priceDiscount;
+    } else {
+      console.log("if statement was false")
+      return this.props.classes.priceRegular;
+    }
+  }
+
   render() {
     return (
       <Grid item>
-        <Card className={this.props.classes.card}>
+        <Card className={this.props.classes.card} data-testid="cartItem">
           <Grid container direction="row" justify="space-between">
             <Grid item className={this.props.classes.cardItem}
                 style={{flexGrow: 4}}>
@@ -38,11 +65,13 @@ class CartItem extends Component {
             </Grid>
             <Grid item className={this.props.classes.cardItem}
                 style={{flexGrow: 1, textAlign: "right"}}>
-              {this.props.product.quantity} x ${this.props.product.price} = 
+              {this.props.product.quantity} x <span className={this.priceStyle()}>${this.props.product.price - this.props.product.discount}</span> = 
             </Grid>
             <Grid item className={this.props.classes.cardItem}
                 style={{flexGrow: 1, textAlign: "right"}}>
-              $ {(new Decimal(this.props.product.price).times(this.props.product.quantity)).toFixed(2)}
+              <span className={this.priceStyle()}>
+                $ {(new Decimal(this.props.product.price - this.props.product.discount).times(this.props.product.quantity)).toFixed(2)}
+              </span>
             </Grid>
             <Grid item className={this.props.classes.cardItem}
                 style={{flexGrow: 1, textAlign: "right"}}>
@@ -60,23 +89,6 @@ class CartItem extends Component {
 CartItem = withStyles(styles)(CartItem);
 
 class LeftPane extends Component {
-
-  calculateSubtotal() {
-    // Sum up taxed items and non-taxed items separately, and apply the tax multiplier
-    // at the end to avoid decimal inaccuracies
-    let nonTaxedSubtotal = new Decimal(0);
-    let taxedSubtotal = new Decimal(0);
-    for (const cartItem of this.props.cartList) {
-      if (cartItem.taxed_item) {
-        taxedSubtotal = taxedSubtotal.add(new Decimal(cartItem.price).times(cartItem.quantity));
-      } else {
-        nonTaxedSubtotal = nonTaxedSubtotal.add(new Decimal(cartItem.price).times(cartItem.quantity));
-      }
-      console.log(nonTaxedSubtotal.toString(), taxedSubtotal.toString());
-    }
-    return (nonTaxedSubtotal.add(taxedSubtotal.times(ontarioGSTRate.add(1)))).toFixed(2);
-  }
-
   render() {
     return (
       <Box id="leftPane">
@@ -89,7 +101,7 @@ class LeftPane extends Component {
           </Grid>
         </Box>
         <Box id="subtotalBar">
-          Total after tax: ${this.calculateSubtotal()}
+          Total after tax: ${this.props.cartSubtotalCalculator()}
         </Box>
       </Box>
     );
