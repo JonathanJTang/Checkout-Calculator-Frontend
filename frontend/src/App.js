@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-
+import Decimal from 'decimal.js-light';
 
 import './App.css';
 import LeftPane from './LeftPane';
@@ -12,6 +12,8 @@ import RightPane from './RightPane';
 // const baseUrl = "http://127.0.0.1:8000";
 const baseUrl = "https://checkoutcalculator301.herokuapp.com";
 const apiBaseUrl = baseUrl + "/api";
+
+const ontarioGSTRate = new Decimal(0.13);
 
 
 class App extends Component {
@@ -50,8 +52,12 @@ class App extends Component {
           delete cartProduct.available_stock;
           cartProduct.quantity = 1;
           this.setState({cartList: this.state.cartList.concat(cartProduct)});
-        } else {
-          // The cart currently has no items of this product 
+        } else if (this.state.cartList[cartItemIndex].quantity === updatedProduct.available_stock) {
+          // Can't add more of this product to the cart than the available stock
+          alert(`Sorry, there are only ${product.available_stock} ${product.name} in stock`);
+        }
+        else {
+          // The cart currently has one or more items of this product 
           const cartProduct = this.state.cartList[cartItemIndex];
           cartProduct.quantity += 1;
           this.setState({cartList: this.state.cartList});
@@ -66,15 +72,28 @@ class App extends Component {
 
   onCartItemRemoveClick(id) {
     const cartItemIndex = this.state.cartList.findIndex((cartItem) => {return cartItem.id === id});
-    console.log("before delete: ", this.state.cartList);
     this.state.cartList.splice(cartItemIndex, 1);
-    console.log("after delete: ", this.state.cartList);
     this.setState({cartList: this.state.cartList});
   }
 
   onCheckoutClick() {
     alert("You have successfully checked out the items!\nPress 'OK' to checkout the next customer")
     this.setState({cartList: []})  // Clear the cart
+  }
+
+  calculateSubtotal() {
+    // Sum up taxed items and non-taxed items separately, and apply the tax multiplier
+    // at the end to avoid decimal inaccuracies
+    let nonTaxedSubtotal = new Decimal(0);
+    let taxedSubtotal = new Decimal(0);
+    for (const cartItem of this.state.cartList) {
+      if (cartItem.taxed_item) {
+        taxedSubtotal = taxedSubtotal.add(new Decimal(cartItem.price - cartItem.discount).times(cartItem.quantity));
+      } else {
+        nonTaxedSubtotal = nonTaxedSubtotal.add(new Decimal(cartItem.price - cartItem.discount).times(cartItem.quantity));
+      }
+    }
+    return (nonTaxedSubtotal.add(taxedSubtotal.times(ontarioGSTRate.add(1)))).toFixed(2);
   }
 
   render() {
@@ -96,6 +115,7 @@ class App extends Component {
           <LeftPane
             cartList={this.state.cartList}
             parentClickHandler={this.onCartItemRemoveClick.bind(this)}
+            cartSubtotalCalculator={this.calculateSubtotal.bind(this)}
           >
           </LeftPane>
         </Box>

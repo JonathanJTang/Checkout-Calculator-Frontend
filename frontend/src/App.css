@@ -65,13 +65,13 @@
 
 #orderButtonsGroup {
   /* background-color: white; */
-  max-height: calc(var(--main-window-height) - var(--subtotal-bar-height) - 20px);
+  height: calc(var(--main-window-height) - var(--subtotal-bar-height) - 5px - 20px);
   overflow: auto;
   margin-bottom: 20px;
 }
 
 #checkoutButton {
-  max-height: var(--subtotal-bar-height);
+  max-height: var(--subtotal-bar-height) + 5px;
 }
 
 #leftPane {
