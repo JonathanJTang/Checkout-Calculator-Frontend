@@ -26,30 +26,17 @@ const styles = {
   },
 };
 
-
+/* An entry in the shopping cart. */
 class CartItem extends Component {
   onClickHandler() {
     this.props.parentClickHandler(this.props.product.id);
   }
 
-  // priceColor() {
-  //   console.log(this.props.product.discount)
-  //   if (this.props.product.discount > 0) {
-  //     console.log("if statement was true")
-  //     return "green";
-  //   } else {
-  //     console.log("if statement was false")
-  //     return "black";
-  //   }
-  // }
-
+  /* Return the corresponding style className based on whether this product is discounted. */
   priceStyle() {
-    console.log(this.props.product.discount)
     if (this.props.product.discount > 0) {
-      console.log("if statement was true")
       return this.props.classes.priceDiscount;
     } else {
-      console.log("if statement was false")
       return this.props.classes.priceRegular;
     }
   }
@@ -88,6 +75,7 @@ class CartItem extends Component {
 }
 CartItem = withStyles(styles)(CartItem);
 
+/* The left-hand side pane of the app. */
 class LeftPane extends Component {
   render() {
     return (

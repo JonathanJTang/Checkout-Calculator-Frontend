@@ -37,6 +37,7 @@ class OrderButton extends Component {
   }
 }
 
+/* The right-hand side pane of the app. */
 class RightPane extends Component {
   render() {
     return (

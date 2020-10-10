@@ -25,6 +25,7 @@ class App extends Component {
 
   async componentDidMount() {
     try {
+      /* Fetch product database from backend */
       const response = await fetch(apiBaseUrl + "/product-database");
       const productList = await response.json();
       this.setState({
