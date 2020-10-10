@@ -4,14 +4,16 @@
 
 Repository for the web frontend for CSC301 A1.
 
-Our assignment report is in the root directory of this repository, the file named `CSC301 A1 Report.pdf`
+Our assignment report is in the root directory of this repository, the file named `CSC301 A1 Report.pdf` (the same document is in all three of our repositories).
 
 Note on CircleCI sticker: the state is not accurate, since CircleCI tasks refused to run (and give a fail status) after the class organization account ran out of credits.
 
 ## Testing Instructions
 
 ### Running the production app
-Go to [https://checkoutcalculator301.herokuapp.com/](https://checkoutcalculator301.herokuapp.com/) to check out our (deployed) web app!
+Go to [https://checkoutcalculator301.herokuapp.com/](https://checkoutcalculator301.herokuapp.com/) to check out our (deployed) web app! Here is a video on how to setup, view, and test our app :) [https://youtu.be/GLihyny2xRk](https://youtu.be/GLihyny2xRk).
+
+(If you'd like to check that price calculations are correct, you can view the product database [here](https://checkoutcalculator301.herokuapp.com/api/product-database))
 
 ### Steps for Testing
 - On the right hand side you'll see a panel with a list of cyan "order buttons" populated from the central product database, which you can click to add items to your cart.
