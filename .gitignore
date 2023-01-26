@@ -67,9 +67,4 @@ typings/
 # !.vscode/launch.json 
 # !.vscode/extensions.json 
 .history
-
-# Team specific files
 *.code-workspace
-SetupInstructions.txt
-
-
