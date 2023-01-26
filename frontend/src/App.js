@@ -9,8 +9,10 @@ import LeftPane from './LeftPane';
 import RightPane from './RightPane';
 
 // Use either the local Django server url, or the hosted server link
-// const baseUrl = "http://127.0.0.1:8000";
-const baseUrl = "https://checkoutcalculator301.herokuapp.com";
+const baseUrl = "http://127.0.0.1:8000";
+// const baseUrl = "https://checkoutcalculator301.herokuapp.com";
+// const baseUrl = "https://checkoutcalculator.fly.dev";
+// baseUrl should NOT end with a '/' forward slash
 const apiBaseUrl = baseUrl + "/api";
 
 const ontarioGSTRate = new Decimal(0.13);
@@ -23,6 +25,16 @@ class App extends Component {
     cartList: []
   };
 
+  fetchErrorHandler(e) {
+    if (e instanceof TypeError) {
+      // Network error or CORS misconfigured on the server
+      alert("Sorry, could not connect to the server. Please try again, making sure the web server is online.");
+    } else {
+      alert("Sorry, an error occurred. Please try again later");
+      console.log(e);
+    }
+  }
+
   async componentDidMount() {
     try {
       /* Fetch product database from backend */
@@ -32,7 +44,7 @@ class App extends Component {
         productList: productList
       });
     } catch (e) {
-      console.log(e);
+      this.fetchErrorHandler(e);
     }
   }
 
@@ -52,29 +64,28 @@ class App extends Component {
           const cartProduct = Object.assign({}, product);
           delete cartProduct.available_stock;
           cartProduct.quantity = 1;
-          this.setState({cartList: this.state.cartList.concat(cartProduct)});
+          this.setState(state => {return {cartList: state.cartList.concat(cartProduct)}});
         } else if (this.state.cartList[cartItemIndex].quantity === updatedProduct.available_stock) {
           // Can't add more of this product to the cart than the available stock
           alert(`Sorry, there are only ${product.available_stock} ${product.name} in stock`);
         }
         else {
           // The cart currently has one or more items of this product 
-          const cartProduct = this.state.cartList[cartItemIndex];
-          cartProduct.quantity += 1;
-          this.setState({cartList: this.state.cartList});
+          this.setState(state => {return {cartList: state.cartList.map((cartProduct, index) => {
+            return index === cartItemIndex ? {...cartProduct, quantity: cartProduct.quantity + 1} : cartProduct;
+          })}});
         }
         
       }
     } catch (e) {
-      alert("Sorry, an error occurred. Please try again, making sure the web server is online.");
-      console.log(e);
+      this.fetchErrorHandler(e);
     }
   }
 
   onCartItemRemoveClick(id) {
-    const cartItemIndex = this.state.cartList.findIndex((cartItem) => {return cartItem.id === id});
-    this.state.cartList.splice(cartItemIndex, 1);
-    this.setState({cartList: this.state.cartList});
+    this.setState(state => {
+      return {cartList: state.cartList.filter((cartItem) => cartItem.id !== id)};
+    });
   }
 
   onCheckoutClick() {
