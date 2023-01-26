@@ -1,11 +1,3 @@
-/* Colors:
-#5680e9
-#84ceeb
-#5ab9ea
-#c1c8e4
-#8860d0
-*/
-
 :root {
   --appbar-height: 7vh;
   --main-window-height: calc(100vh - var(--appbar-height));
@@ -14,13 +6,11 @@
 
 .App {
   /* text-align: center; */
-  /* background-color: #5ebbff; */
   background-color: white;
   min-height: 100vh;  /* Take up full height of screen */
 }
 
 .appHeader {
-  /* background-color: #282c34; */
   height: var(--appbar-height);
   display: flex;
   align-items: center;
@@ -39,7 +29,6 @@
 }
 
 #orderButtonsGroup {
-  /* background-color: white; */
   height: calc(var(--main-window-height) - var(--subtotal-bar-height) - 25px);
   overflow: auto;
   margin-bottom: 20px;
@@ -51,7 +40,6 @@
 
 #leftPane {
   background-color: #84ceeb;
-  /* background-color: #e2e2e2; */
   float: right;
   box-sizing: border-box;
   width: calc(90% - 200px);
@@ -65,7 +53,6 @@
 }
 
 #subtotalBar {
-  /* background-color: #5680e9; */
   background-color: #8860d9;
   box-sizing: border-box;
   height: var(--subtotal-bar-height);

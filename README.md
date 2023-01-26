@@ -1,6 +1,6 @@
 # Checkout Calculator Frontend (React)
 
-A simple web frontend built with React using Material UI elements, for a checkout calculator designed for stores in Ontario, Canada.
+A simple web frontend built using React with the help of Material UI elements, for a checkout calculator designed for stores in Ontario, Canada.
 
 This was a 2-week course project done together with İsmail Atadinç (kralgeliy1).
 

@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import { withStyles } from '@material-ui/core';
-import Decimal from 'decimal.js-light';
-
+import React, { Component } from "react";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import { withStyles } from "@material-ui/core";
+import Decimal from "decimal.js-light";
 
 const styles = {
   card: {
@@ -46,24 +45,49 @@ class CartItem extends Component {
       <Grid item>
         <Card className={this.props.classes.card} data-testid="cartItem">
           <Grid container direction="row" justify="space-between">
-            <Grid item className={this.props.classes.cardItem}
-                style={{flexGrow: 4}}>
+            <Grid
+              item
+              className={this.props.classes.cardItem}
+              style={{ flexGrow: 4 }}
+            >
               <strong>{this.props.product.name} </strong>
             </Grid>
-            <Grid item className={this.props.classes.cardItem}
-                style={{flexGrow: 1, textAlign: "right"}}>
-              {this.props.product.quantity} x <span className={this.priceStyle()}>${this.props.product.price - this.props.product.discount}</span> = 
-            </Grid>
-            <Grid item className={this.props.classes.cardItem}
-                style={{flexGrow: 1, textAlign: "right"}}>
+            <Grid
+              item
+              className={this.props.classes.cardItem}
+              style={{ flexGrow: 1, textAlign: "right" }}
+            >
+              {this.props.product.quantity} x{" "}
               <span className={this.priceStyle()}>
-                $ {(new Decimal(this.props.product.price - this.props.product.discount).times(this.props.product.quantity)).toFixed(2)}
+                ${this.props.product.price - this.props.product.discount}
+              </span>{" "}
+              =
+            </Grid>
+            <Grid
+              item
+              className={this.props.classes.cardItem}
+              style={{ flexGrow: 1, textAlign: "right" }}
+            >
+              <span className={this.priceStyle()}>
+                ${" "}
+                {new Decimal(
+                  this.props.product.price - this.props.product.discount
+                )
+                  .times(this.props.product.quantity)
+                  .toFixed(2)}
               </span>
             </Grid>
-            <Grid item className={this.props.classes.cardItem}
-                style={{flexGrow: 1, textAlign: "right"}}>
-              <IconButton color="secondary" size="small" aria-label="remove this item"
-                  onClick={this.onClickHandler.bind(this)}>
+            <Grid
+              item
+              className={this.props.classes.cardItem}
+              style={{ flexGrow: 1, textAlign: "right" }}
+            >
+              <IconButton
+                color="secondary"
+                size="small"
+                aria-label="remove this item"
+                onClick={this.onClickHandler.bind(this)}
+              >
                 <CloseIcon />
               </IconButton>
             </Grid>
@@ -75,16 +99,20 @@ class CartItem extends Component {
 }
 CartItem = withStyles(styles)(CartItem);
 
-/* The left-hand side pane of the app. */
+/* The left-hand side pane of the app, displaying the cart items
+   and the total cost. */
 class LeftPane extends Component {
   render() {
     return (
       <Box id="leftPane">
         <Box id="checkoutItemsList" p={2}>
           <Grid container direction="column" spacing={2}>
-            {this.props.cartList.map(cartItem => (
-              <CartItem key={cartItem.id} product={cartItem}
-                parentClickHandler={this.props.parentClickHandler}/>
+            {this.props.cartList.map((cartItem) => (
+              <CartItem
+                key={cartItem.id}
+                product={cartItem}
+                parentClickHandler={this.props.parentClickHandler}
+              />
             ))}
           </Grid>
         </Box>
