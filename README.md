@@ -2,7 +2,7 @@
 
 A simple web frontend built using React with the help of Material UI elements, for a checkout calculator designed for stores in Ontario, Canada.
 
-This was a 2-week course project done together with İsmail Atadinç (kralgeliy1).
+This was part of a 2-week course project done together with İsmail Atadinç (kralgeliy1).
 
 ## Testing Instructions
 
