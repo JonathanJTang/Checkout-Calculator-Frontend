@@ -3,6 +3,7 @@ import Box from "@material-ui/core/Box";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Decimal from "decimal.js-light";
+import produce from "immer";
 
 import "./App.css";
 import LeftPane from "./LeftPane";
@@ -100,15 +101,7 @@ class App extends Component {
           );
         } else {
           // The cart currently has one or more items of this product
-          this.setState((state) => {
-            return {
-              cartList: state.cartList.map((cartProduct, index) => {
-                return index === cartItemIndex
-                  ? { ...cartProduct, quantity: cartProduct.quantity + 1 }
-                  : cartProduct;
-              }),
-            };
-          });
+          this.setState(produce(draft => { draft.cartList[cartItemIndex].quantity++ }));
         }
       }
     } catch (e) {
