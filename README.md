@@ -4,6 +4,8 @@ A simple web frontend built using React with the help of Material UI elements, f
 
 This was part of a 2-week course project done together with İsmail Atadinç (kralgeliy1).
 
+![Page screenshot](./PageScreenshot.jpg)
+
 ## Testing Instructions
 
 ### Running the production app
